@@ -13,7 +13,7 @@ Build a UI and backend for an auto complete using the backend you write as well 
 
 Close git repository using git clone command:
 ```
-git clone ....
+git clone git@github.com:vishalmaniya/schoology-test-app.git
 ```
 Build docker image and run docker container:
 ```
