@@ -59,3 +59,5 @@ You can access frontend url in the browser, http://127.0.0.1:3000
 By default frontend port is 3000, unless you change you can use the same.
 
 Search for the states name and you can find autosuggestion below your input.
+
+![Alt text](schoology_test_app.png?raw=true "Schoology Test App")
