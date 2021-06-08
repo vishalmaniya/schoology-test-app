@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import SuggestionList from './SuggestionList'
 
-const API_URL = 'http://127.0.0.1:8083/api/v1/state/search'
+const API_URL = 'http://127.0.0.1:8081/api/v1/state/search'
 
 class AutocompleteSearch extends Component {
     state = {

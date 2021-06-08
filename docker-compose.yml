@@ -16,7 +16,7 @@ services:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
     volumes:
-      - ./backend:/var/www/backend
+      - ./backend:/var/www/html/backend
     networks:
       - app-network
 
@@ -32,7 +32,7 @@ services:
     depends_on:
       - backend_app
     volumes:
-      - ./frontend:/var/www/frontend
+      - ./frontend:/var/www/html/frontend
       - '/var/www/html/frontend/node_modules'
     networks:
       - app-network

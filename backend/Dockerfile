@@ -1,7 +1,7 @@
 FROM php:7.4-apache AS php-base
 
 # Set Apache document root
-ENV APACHE_DOCUMENT_ROOT /var/www/backend/public
+ENV APACHE_DOCUMENT_ROOT /var/www/html/backend/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
@@ -37,9 +37,9 @@ RUN mkdir -m 700 /root/.ssh; \
 FROM php-base AS php
 
 # Copy files
-COPY / /var/www/
+COPY / /var/www/html/backend
 
 # Install Composer dependencies
-RUN cd /var/www && composer install --no-dev && composer clear-cache
+RUN cd /var/www/html/backend && composer install --no-dev && composer clear-cache
 
 EXPOSE 80

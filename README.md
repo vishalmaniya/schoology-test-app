@@ -15,6 +15,14 @@ Close git repository using git clone command:
 ```
 git clone git@github.com:vishalmaniya/schoology-test-app.git
 ```
+
+Clone env.example to .env
+```
+cp .env.example .env
+```
+and update db environment variables:
+`DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`,`DB_PASSWORD`
+
 Build docker image and run docker container:
 ```
 docker-compose build
@@ -28,19 +36,17 @@ Clone env.example to .env and update db environment variables:
 cd backend 
 ```
 Clone env.example to .env and update db environment variables for backend app.
-
+```
+cp .env.example .env
+```
 Now, we can run laravel artisan commands inside docker environment
 ```
-docker exec -it backed_app bash -c "cd backend &&
-composer install &&
-php artsan key:generate --ansi &&
-php artisan migrate &&
-php artisan db:seed"
+docker exec -it backed_app bash -c "cd backend && composer install && php artisan key:generate --ansi && php artisan migrate && php artisan db:seed"
 ```
 
 #### Run Tests
 ```
-docker exec -it backed_app bash -c "cd  /var/www/backend && ./vendor/bin/phpunit"
+docker exec -it backed_app bash -c "cd  /var/www/html/backend && ./vendor/bin/phpunit"
 ```
 
 ## Curl Commands

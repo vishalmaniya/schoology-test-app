@@ -21,7 +21,7 @@ class StateController extends Controller
         if (!$state) {
             return response()->json([
                 'success' => false,
-                'message' => 'State not found '
+                'message' => 'State not found'
             ], 400);
         }
 

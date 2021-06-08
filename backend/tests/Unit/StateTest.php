@@ -1,22 +1,18 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Model\State;
 use Tests\TestCase;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Http\Response;
 
 class StateTest extends TestCase
 {
-    private $client;
-    private $endpoint;
-
     public function __construct()
     {
         parent::__construct();
-        $this->client = new GuzzleClient();
-        $this->endpoint = 'http://192.168.0.105:' . env('BACKEND_PORT', '8083');
     }
 
     /**
@@ -28,47 +24,61 @@ class StateTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /**
-     * @return void
-     */
-    public function test_for_all_states()
+    public function test_state_api_structure()
     {
-        $url = $this->endpoint . '/api/v1/state';
-        $res = $this->client->request('GET', $url);
-        $this->assertEquals(200, $res->getStatusCode());
-
+        $this->json('get', '/api/v1/state')
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure(
+                [
+                    '*' => [
+                        'id',
+                        'name'
+                    ]
+                ]
+            );
     }
 
-    /**
-     * @return void
-     */
+    public function test_for_all_states()
+    {
+        $states = State::all();
+
+        $this->json('get', '/api/v1/state')
+            ->assertStatus(Response::HTTP_OK)
+            ->assertSuccessful()
+            ->assertJsonStructure(
+                [
+                    '*' => [
+                        'id',
+                        'name'
+                    ]
+                ]
+            )
+            ->assertJsonCount($states->count());
+    }
+
     public function test_for_search_state()
     {
         $faker = Faker::create();
         $name = $faker->name;
-
         State::create(['name'=>$name]);
-
-        $url = $this->endpoint . '/api/v1/state/search?term=' . $name;
-        $res = $this->client->request('GET', $url);
-        $this->assertEquals(200, $res->getStatusCode());
+        $url = '/api/v1/state/search?term=' . $name;
+        $response = $this->get($url);
+        $response->assertStatus(200);
+        $this->assertEquals(200, $response->getStatusCode());
         $this->assertDatabaseHas('states', [
             'name' => $name
         ]);
     }
 
-    /**
-     * @return void
-     */
     public function test_for_invalid_search_state()
     {
         $faker = Faker::create();
         $name = $faker->name;
+        $url = '/api/v1/state/search?term=' . $name;
+        $response =$this->get($url);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals([], json_decode($response->getContent(), true));
+        $this->assertEquals([], json_decode($response->getContent(), true));
 
-        $url = $this->endpoint . '/api/v1/state/search?term=' . $name;
-        $res = $this->client->request('GET', $url);
-
-        $this->assertEquals(200, $res->getStatusCode());
-        $this->assertEquals([], json_decode($res->getBody(), true));
     }
 }

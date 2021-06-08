@@ -1,12 +1,14 @@
 FROM node:14-slim
 
-WORKDIR /var/www/frontend
+WORKDIR /var/www/html/frontend
 
-ENV PATH /var/www/frontend/node_modules/.bin:$PATH
+ENV PATH /var/www/html/frontend/node_modules/.bin:$PATH
 COPY package*.json ./
 
 RUN npm install
 
-COPY .. .
+COPY . .
 
 EXPOSE 3000
+
+CMD [ "npm", "start" ]
