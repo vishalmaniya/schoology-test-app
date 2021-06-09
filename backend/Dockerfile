@@ -42,4 +42,7 @@ COPY / /var/www/html/backend
 # Install Composer dependencies
 RUN cd /var/www/html/backend && composer install --no-dev && composer clear-cache
 
+# Update directory permission
+RUN cd /var/www/html/backend && chown -R $USER:www-data storage && chown -R $USER:www-data bootstrap/cache && chmod -R 775 storage && chmod -R 775 bootstrap/cache
+
 EXPOSE 80
