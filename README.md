@@ -46,7 +46,7 @@ docker exec -it backed_app bash -c "cd backend && composer install && php artisa
 
 #### Run Tests
 ```
-docker exec -it backed_app bash -c "cd  /var/www/html/backend && ./vendor/bin/phpunit"
+docker exec -it backed_app bash -c "cd  /var/www/html/backend && php artisan test"
 ```
 
 ## Curl Commands

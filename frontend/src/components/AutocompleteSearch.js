@@ -28,6 +28,10 @@ class AutocompleteSearch extends Component {
                 if (this.state.query.length % 2 === 0) {
                     this.getInfo()
                 }
+            } else {
+                this.setState({
+                    results: []
+                })
             }
         })
     }
