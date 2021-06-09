@@ -25,8 +25,7 @@ Update db environment variables (you can skip this step to use default value):
 
 Build docker image and run docker container:
 ```
-docker-compose build
-docker-compose up -d
+docker-compose build && docker-compose up -d
 ```
 
 ### Backend
@@ -40,6 +39,11 @@ Update db environment variables (you can skip this step to use default value):
 Now, we can run laravel artisan commands inside docker environment
 ```
 docker exec -it backed_app bash -c "cd backend && composer install && php artisan key:generate --ansi && php artisan migrate && php artisan db:seed"
+```
+
+If you see any error related to storage directory permission, please run
+```
+docker exec -it backed_app bash -c "cd  /var/www/html/backend && chown -R www-data:www-data storage && chown -R www-data:www-data bootstrap/cache && chmod -R 775 storage && chmod -R 775 bootstrap/cache"
 ```
 
 #### Run Tests

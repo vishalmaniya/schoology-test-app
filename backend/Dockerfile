@@ -42,7 +42,16 @@ COPY / /var/www/html/backend
 # Install Composer dependencies
 RUN cd /var/www/html/backend && composer install --no-dev && composer clear-cache
 
+# Add UID '1000' to www-data
+RUN usermod -u 1000 www-data
+
+# Copy existing application directory permissions
+COPY --chown=$USER:www-data . /var/www/html/backend
+
+# Change current user to www
+USER $USER
+
 # Update directory permission
-RUN cd /var/www/html/backend && chown -R $USER:www-data storage && chown -R $USER:www-data bootstrap/cache && chmod -R 775 storage && chmod -R 775 bootstrap/cache
+#RUN cd /var/www/html/backend && chown -R $USER:www-data storage && chown -R $USER:www-data bootstrap/cache && chmod -R 775 storage && chmod -R 775 bootstrap/cache
 
 EXPOSE 80
