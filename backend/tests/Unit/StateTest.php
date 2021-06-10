@@ -40,7 +40,7 @@ class StateTest extends TestCase
 
     public function test_for_all_states()
     {
-        $states = State::all();
+        $states = State::distinct()->get();
 
         $this->json('get', '/api/v1/state')
             ->assertStatus(Response::HTTP_OK)

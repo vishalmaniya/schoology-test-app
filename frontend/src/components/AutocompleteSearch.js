@@ -22,11 +22,6 @@ class AutocompleteSearch extends React.Component {
         };
     }
 
-    state = {
-        query: '',
-        results: []
-    }
-
     onChange = (event, { newValue, method }) => {
         this.setState({
             value: newValue
