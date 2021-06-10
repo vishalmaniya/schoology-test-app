@@ -1,53 +1,79 @@
-import React, { Component } from 'react'
+import React from 'react'
 import axios from 'axios'
+import Autosuggest from 'react-autosuggest';
 import SuggestionList from './SuggestionList'
-
 const API_URL = 'http://127.0.0.1:8081/api/v1/state/search'
 
-class AutocompleteSearch extends Component {
+function escapeRegexCharacters(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function getSuggestionValue(suggestion) {
+    return suggestion.name;
+}
+
+class AutocompleteSearch extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            value: '',
+            suggestions: []
+        };
+    }
+
     state = {
         query: '',
         results: []
     }
 
-    getInfo = () => {
-        axios.get(`${API_URL}?term=${this.state.query}`)
+    onChange = (event, { newValue, method }) => {
+        this.setState({
+            value: newValue
+        });
+    };
+
+    onSuggestionsFetchRequested = ({ value }) => {
+        const escapedValue = escapeRegexCharacters(value.trim());
+
+        if (escapedValue === '') {
+            return [];
+        }
+
+        const regex = new RegExp('^' + escapedValue, 'i');
+
+        axios.get(`${API_URL}?term=${value}`)
             .then(({ data }) => {
                 this.setState({
-                    results: data // MusicGraph returns an object named data,
-                                       // as does axios. So... data.data
+                    suggestions: data.filter(state => regex.test(state.name))
                 })
             })
     }
 
-    handleInputChange = () => {
+    onSuggestionsClearRequested = () => {
         this.setState({
-            query: this.search.value
-        }, () => {
-            if (this.state.query && this.state.query.length > 1) {
-                if (this.state.query.length % 2 === 0) {
-                    this.getInfo()
-                }
-            } else {
-                this.setState({
-                    results: []
-                })
-            }
-        })
-    }
+            suggestions: []
+        });
+    };
 
     render() {
+        const { value, suggestions } = this.state;
+        const inputProps = {
+            placeholder: "Search state..",
+            value,
+            onChange: this.onChange
+        };
+
         return (
-            <form>
-                <input
-                    placeholder="Search for..."
-                    ref={input => this.search = input}
-                    onChange={this.handleInputChange}
-                />
-                <SuggestionList results={this.state.results} />
-            </form>
-        )
+            <Autosuggest
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={SuggestionList}
+                inputProps={inputProps} />
+        );
     }
 }
 
-export default AutocompleteSearch
+export default AutocompleteSearch;
