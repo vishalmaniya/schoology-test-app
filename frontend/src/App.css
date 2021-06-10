@@ -36,14 +36,6 @@
 {
   padding-left: 500px;
 }
-.auto-complete-inner ul
-{
-  position: absolute;
-  background: #fff;
-  margin: 0;
-  min-width: 115px;
-  border-radius: 2px;
-}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

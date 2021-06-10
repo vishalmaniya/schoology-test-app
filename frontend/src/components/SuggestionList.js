@@ -1,13 +1,9 @@
 import React from 'react'
 
-const SuggestionList = (props) => {
-    const options = props.results.map(r => (
-        <li key={r.id}>
-            {r.name}
-        </li>
-    ))
+const SuggestionList = (suggestion) => {
+    const divStyle = {}
     return (
-        <ul>{options}</ul>
+        <div style={divStyle}>{suggestion.name}</div>
     );
 }
 

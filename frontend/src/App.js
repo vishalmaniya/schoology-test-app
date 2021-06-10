@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import AutocompleteSearch from './components/AutocompleteSearch'
 function App() {
