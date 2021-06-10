@@ -14,6 +14,7 @@ class State extends Model
     public static function getStates($term = null) {
         return static::select('id', 'name')
             ->where("name","LIKE","%{$term}%")
+            ->distinct()
             ->get();
     }
 }
